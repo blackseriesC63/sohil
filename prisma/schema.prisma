@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:6363263Aa@localhost:5432/sohilCopy?schema=public"
 }
 
 model Restaurant {
