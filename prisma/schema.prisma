@@ -1,0 +1,153 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Restaurant {
+  id         Int       @id @default(autoincrement())
+  name       String?
+  location   String
+  Employee   Employee? @relation(fields: [employeeId], references: [id])
+  employeeId Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Role {
+  id        Int        @id @default(autoincrement())
+  role_name String?
+  Employee  Employee[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("role")
+}
+
+model Employee {
+  id                 Int     @id @default(autoincrement())
+  name               String?
+  email              String  @unique
+  phone              String
+  password           String?
+  hashedRefreshToken String?
+
+  manger_id Restaurant[]
+  Role      Role?        @relation(fields: [roleId], references: [id])
+  roleId    Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  employee Order[]
+}
+
+model Payment_type {
+  id                Int       @id @default(autoincrement())
+  payment_type      String
+  payment_method_id Payment[]
+  payment_typeId    Reciept[]
+}
+
+model Payment {
+  id             Int           @id @default(autoincrement())
+  Payment_type   Payment_type? @relation(fields: [payment_typeId], references: [id])
+  payment_typeId Int?
+  Reciept        Reciept?      @relation(fields: [recieptId], references: [id])
+  recieptId      Int?
+}
+
+model Food_category {
+  id          Int          @id @default(autoincrement())
+  name        String
+  category_id Menu_items[]
+}
+
+model Menu_items {
+  id              Int            @id @default(autoincrement())
+  name            String
+  menu_id         Order_items[]
+  price           Int
+  description     String
+  image           String
+  Food_category   Food_category? @relation(fields: [food_categoryId], references: [id])
+  food_categoryId Int?
+}
+
+model Order_items {
+  id           Int         @id @default(autoincrement())
+  Menu_items   Menu_items? @relation(fields: [menu_itemsId], references: [id])
+  menu_itemsId Int?
+  quantity     Int
+  Order        Order?      @relation(fields: [orderId], references: [id])
+  orderId      Int?
+  comments     String
+}
+
+model Table {
+  id           Int     @id @default(autoincrement())
+  table_number Int
+  capacity     Int
+  isAvailable  Boolean
+  table_id     Order[]
+
+  @@map("table")
+
+}
+
+model Customer {
+  id                   Int     @id @default(autoincrement())
+  name                 String
+  email                String
+  phone                String
+  hashed_password      String
+  activation_link      String?
+  hashed_refresh_token String?
+  Order                Order[]
+}
+
+model Order {
+  id         Int           @id @default(autoincrement())
+  Table      Table?        @relation(fields: [tableId], references: [id])
+  tableId    Int?
+  Employee   Employee?     @relation(fields: [employeeId], references: [id])
+  employeeId Int?
+  status     String
+  order_date DateTime
+  order_id   Order_items[]
+  Customer   Customer?     @relation(fields: [customerId], references: [id])
+  customerId Int?
+  orderId    Reciept[]
+}
+
+model Reciept {
+  id             Int           @id @default(autoincrement())
+  total_price    Int?
+  Order          Order?        @relation(fields: [orderId], references: [id])
+  orderId        Int?
+  Payment_type   Payment_type? @relation(fields: [payment_typeId], references: [id])
+  payment_typeId Int?
+  receipt_id     Payment[]
+}
+
+model Admin {
+  id                      Int     @id @default(autoincrement())
+  name                    String
+  email                   String  @unique
+  phone                   String
+  is_active               Boolean
+  is_creator              Boolean
+  hashed_refresh_password String?
+  hashed_refresh_token    String?
+}
