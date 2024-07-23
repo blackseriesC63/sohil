@@ -8,12 +8,14 @@ import {
   Param,
   Delete,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { FoodCategoryService } from './food_category.service';
 import { CreateFoodCategoryDto } from './dto/create-food_category.dto';
 import { UpdateFoodCategoryDto } from './dto/update-food_category.dto';
 import { ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { handleError } from '../common/errors/errorHandlingFile';
+import { AccessTokenGuard } from '../common/guards';
 
 @ApiTags('food-category')
 @Controller('food-category')
@@ -69,6 +71,7 @@ export class FoodCategoryController {
     }
   }
 
+  @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Delete a food category by ID' })
   @ApiParam({ name: 'id', type: 'number', description: 'Food category ID' })
   @Delete(':id')

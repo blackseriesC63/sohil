@@ -54,18 +54,15 @@ model Employee {
 }
 
 model Payment_type {
-  id                Int       @id @default(autoincrement())
-  payment_type      String
-  payment_method_id Payment[]
-  payment_typeId    Reciept[]
+  id             Int       @id @default(autoincrement())
+  payment_type   String
+  payment_typeId Reciept[]
 }
 
 model Payment {
-  id             Int           @id @default(autoincrement())
-  Payment_type   Payment_type? @relation(fields: [payment_typeId], references: [id])
-  payment_typeId Int?
-  Reciept        Reciept?      @relation(fields: [recieptId], references: [id])
-  recieptId      Int?
+  id        Int      @id @default(autoincrement())
+  Reciept   Reciept? @relation(fields: [recieptId], references: [id])
+  recieptId Int?
 }
 
 model Food_category {
@@ -103,13 +100,12 @@ model Table {
   table_id     Order[]
 
   @@map("table")
-
 }
 
 model Customer {
   id                   Int     @id @default(autoincrement())
   name                 String
-  email                String
+  email                String  @unique
   phone                String
   hashed_password      String
   activation_link      String?

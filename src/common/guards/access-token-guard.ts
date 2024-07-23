@@ -11,12 +11,14 @@ export class AccessTokenGuard extends AuthGuard('access-jwt') {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const isPublic = this.reflector.getAllAndOverride('isPublic',[
-        context.getHandler(),
-        context.getClass(),
+    const isPublic = this.reflector.getAllAndOverride('isPublic', [
+      context.getHandler(),
+      context.getClass(),
     ]);
 
-    if(isPublic) return true;
+    if (isPublic) return true;
     return super.canActivate(context);
   }
 }
+
+

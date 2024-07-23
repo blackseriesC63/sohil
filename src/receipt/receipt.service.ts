@@ -9,6 +9,7 @@ import { OrderItemsService } from '../order_items/order_items.service';
 import { MenuItemsService } from '../menu_items/menu_items.service';
 import { FoodCategoryService } from '../food_category/food_category.service';
 import { TableService } from '../table/table.service';
+import { PaymentService } from '../payment/payment.service';
 
 @ApiTags('Receipt') // Specify the Swagger tag for this service
 @Injectable()
@@ -20,6 +21,7 @@ export class ReceiptService {
     private readonly foodCategoriesService: FoodCategoryService,
     private readonly menuItemsService: MenuItemsService,
     private readonly tableService: TableService,
+    private readonly paymentService: PaymentService,
   ) {}
 
   async calculateTotalPrice(orderId: number): Promise<number> {
@@ -59,6 +61,8 @@ export class ReceiptService {
       await this.tableService.updateTableAvailability(order.tableId, true);
     }
 
+    await this.paymentService.create({ recieptId: createdReceipt.id });
+
     return createdReceipt;
   }
 
@@ -68,6 +72,13 @@ export class ReceiptService {
       include: {
         Order: {
           include: {
+            Customer: true,
+            Table: true,
+            Employee: {
+              include: {
+                Role: true,
+              },
+            },
             order_id: {
               include: {
                 Menu_items: true,

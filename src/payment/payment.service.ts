@@ -14,7 +14,6 @@ export class PaymentService {
   async create(createPaymentDto: CreatePaymentDto): Promise<Payment> {
     return this.prismaService.payment.create({
       data: {
-        payment_typeId: createPaymentDto.payment_typeId,
         recieptId: createPaymentDto.recieptId,
       },
     });
@@ -24,8 +23,6 @@ export class PaymentService {
   async findAll(): Promise<Payment[]> {
     return this.prismaService.payment.findMany({
       include: {
-        Payment_type: true,
-
         Reciept: true,
       },
     });
@@ -69,7 +66,6 @@ export class PaymentService {
       },
       data: {
         recieptId: updatePaymentDto.recieptId,
-        payment_typeId: updatePaymentDto.payment_typeId,
       },
     });
   }

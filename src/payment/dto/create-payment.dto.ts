@@ -8,8 +8,4 @@ export class CreatePaymentDto {
   readonly recieptId: number
 
 
-  @ApiProperty({ description: 'The ID of the payment type', type: Number })
-  @IsNotEmpty()
-  @IsNumber()
-  readonly payment_typeId: number;
 }

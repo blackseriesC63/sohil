@@ -4,8 +4,6 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { AdminService } from '../admin/admin.service';
@@ -17,6 +15,7 @@ import { Admin } from '@prisma/client';
 import { Response } from 'express';
 import { ApiInternalServerErrorResponse } from '@nestjs/swagger';
 import { EmployeeService } from '../employee/employee.service';
+import { CreateAuthDto, UpdateAuthDto } from './dto';
 
 @Injectable()
 export class AuthService {

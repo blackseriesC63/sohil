@@ -45,11 +45,9 @@ export class TableService {
         id,
       },
     });
-
     if (!table) {
       throw new NotFoundException(`Table with ID ${id} not found`);
     }
-
     return table;
   }
 

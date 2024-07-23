@@ -40,6 +40,7 @@ export class TableController {
     return this.tableService.findAll();
   }
 
+  @UseGuards(AccessTokenGuard)
   @ApiOkResponse({ description: 'Table found' })
   @ApiNotFoundResponse({ description: 'Table not found' })
   @ApiParam({ name: 'id', description: 'Table ID' })
@@ -48,6 +49,7 @@ export class TableController {
     return this.tableService.findOne(+id);
   }
 
+  @UseGuards(AccessTokenGuard)
   @ApiBearerAuth() // Specify that Bearer authentication is required for this endpoint
   @ApiOkResponse({ description: 'Table updated successfully' })
   @ApiNotFoundResponse({ description: 'Table not found' })
@@ -62,7 +64,7 @@ export class TableController {
   @ApiOkResponse({ description: 'Table deleted successfully' })
   @ApiNotFoundResponse({ description: 'Table not found' })
   @ApiParam({ name: 'id', description: 'Table ID' })
-  // @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.tableService.remove(+id);

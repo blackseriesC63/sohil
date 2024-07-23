@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
@@ -84,7 +85,7 @@ export class EmployeeService {
       maxAge: Number(process.env.COOKIE_TIME),
       httpOnly: true,
     });
-    return { tokens, message: 'signed in' };
+    return { message: 'signed in' };
   }
 
   @ApiOperation({ summary: 'Sign out an employee' })

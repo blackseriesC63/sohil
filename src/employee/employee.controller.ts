@@ -21,7 +21,6 @@ import {
 } from '@nestjs/swagger'; // Import necessary Swagger decorators
 import { AccessTokenGuard } from '../common/guards';
 import { SigninEmployeeDto } from './dto/signin.employee.dto';
-import { AdminGuard } from '../common/guards/admin.guard';
 import { UserGuard } from '../common/guards/user.guard';
 
 @ApiTags('employee') // Add API tags
@@ -41,7 +40,7 @@ export class EmployeeController {
 
   @ApiOperation({ summary: 'Create an Employee' })
   @ApiBearerAuth() // Specify that this endpoint requires Bearer Authentication
-  @UseGuards(AdminGuard) // Apply guards
+  @UseGuards(AccessTokenGuard) // Apply guards
   @Post()
   create(@Body() createEmployeeDto: CreateEmployeeDto) {
     return this.employeeService.create(createEmployeeDto);

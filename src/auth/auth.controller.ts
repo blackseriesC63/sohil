@@ -25,6 +25,7 @@ import {
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
 } from '@nestjs/swagger';
+import { IsAdminGuard } from '../common/guards/is_admin.guard';
 
 @Controller('auth')
 @ApiTags('auth') // Add a tag for Swagger
@@ -61,6 +62,7 @@ export class AuthController {
     return this.authService.create(createAuthDto);
   }
 
+  @UseGuards(IsAdminGuard)
   @Get()
   @ApiResponse({ status: HttpStatus.OK, description: 'Returns all users.' }) // Swagger documentation for successful retrieval
   @ApiInternalServerErrorResponse({ description: 'Internal Server Error' }) // Swagger documentation for InternalServerError
